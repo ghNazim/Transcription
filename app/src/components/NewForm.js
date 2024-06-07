@@ -121,93 +121,110 @@ function NewForm() {
     <div className="container">
       <div className="left">
         <div className="App">
-          {!submitted && (
-            <>
-              <form onSubmit={handleSubmit}>
-                <div>
-                  <p>Do you want to transcribe or translate ?</p>
-                  <input
-                    type="radio"
-                    id="choice1Option1"
-                    value="Transcribe"
-                    checked={task === "Transcribe"}
-                    onChange={handleChoice1Change}
-                  />
-                  <label
-                    htmlFor="choice1Option1"
-                    className={
-                      task === "Transcribe" ? "selected" : "deseleceted"
-                    }
-                  >
-                    Transcribe
-                  </label>
-                  <input
-                    type="radio"
-                    id="choice1Option2"
-                    value="Translate"
-                    checked={task === "Translate"}
-                    onChange={handleChoice1Change}
-                  />
-                  <label
-                    htmlFor="choice1Option2"
-                    className={
-                      task === "Translate" ? "selected" : "deseleceted"
-                    }
-                  >
-                    Translate
-                  </label>
-                </div>
-                <div>
-                  <p>
-                    Type of timestamp needed: 
-                  </p>
-                  <input
-                    type="radio"
-                    id="choice2Option1"
-                    value="True"
-                    checked={timeStamp === "True"}
-                    onChange={handleChoice2Change}
-                  />
-                  <label
-                    htmlFor="choice2Option1"
-                    className={
-                      timeStamp === "True" ? "selected" : "deseleceted"
-                    }
-                  >
-                    Word-Level Timestamps
-                  </label>
-                  <input
-                    type="radio"
-                    id="choice2Option2"
-                    value="False"
-                    checked={timeStamp === "False"}
-                    onChange={handleChoice2Change}
-                  />
-                  <label
-                    htmlFor="choice2Option2"
-                    className={
-                      timeStamp === "False" ? "selected" : "deseleceted"
-                    }
-                  >
-                    Sentence-Level Timestamps
-                  </label>
-                </div>
-                <div className="upload">
-                  <input
-                    type="file"
-                    accept="audio/*"
-                    onChange={handleFileChange}
-                  />
-                </div>
-                {error && (
-                  <div className="error">**fields can not be empty</div>
-                )}
+          <>
+            <form onSubmit={handleSubmit}>
+              <div>
+                <p>
+                  <b>Do you want to transcribe or translate ?</b>
+                </p>
+                <input
+                  type="radio"
+                  id="choice1Option1"
+                  value="Transcribe"
+                  checked={task === "Transcribe"}
+                  onChange={handleChoice1Change}
+                  disabled={submitted}
+                />
+                <label
+                  htmlFor="choice1Option1"
+                  className={task === "Transcribe" ? "selected" : "deseleceted"}
+                >
+                  Transcribe
+                </label>
+                <br />
+                <input
+                  type="radio"
+                  id="choice1Option2"
+                  value="Translate"
+                  checked={task === "Translate"}
+                  onChange={handleChoice1Change}
+                  disabled={submitted}
+                />
+                <label
+                  htmlFor="choice1Option2"
+                  className={task === "Translate" ? "selected" : "deseleceted"}
+                >
+                  Translate
+                </label>
+              </div>
+              <div>
+                <p>
+                  <b>Type of timestamp needed:</b>
+                </p>
+                <input
+                  type="radio"
+                  id="choice2Option1"
+                  value="True"
+                  checked={timeStamp === "True"}
+                  onChange={handleChoice2Change}
+                  disabled={submitted}
+                />
+                <label
+                  htmlFor="choice2Option1"
+                  className={timeStamp === "True" ? "selected" : "deseleceted"}
+                >
+                  Word-Level Timestamps
+                </label>
+                <br />
+                <input
+                  type="radio"
+                  id="choice2Option2"
+                  value="False"
+                  checked={timeStamp === "False"}
+                  onChange={handleChoice2Change}
+                  disabled={submitted}
+                />
+                <label
+                  htmlFor="choice2Option2"
+                  className={timeStamp === "False" ? "selected" : "deseleceted"}
+                >
+                  Sentence-Level Timestamps
+                </label>
+                <br />
+                <input
+                  type="radio"
+                  id="choice2Option3"
+                  value="No Timestamps"
+                  checked={timeStamp === "No Timestamps"}
+                  onChange={handleChoice2Change}
+                  disabled={submitted}
+                />
+                <label
+                  htmlFor="choice2Option3"
+                  className={
+                    timeStamp === "No Timestamps" ? "selected" : "deseleceted"
+                  }
+                >
+                  No Timestamps
+                </label>
+              </div>
+              <div className="upload">
+                <input
+                  type="file"
+                  accept="audio/*"
+                  onChange={handleFileChange}
+                  disabled={submitted}
+                />
+              </div>
+              {error && <div className="error">**fields can not be empty</div>}
+              {!submitted && (
                 <button type="submit" className="btn">
                   Submit
                 </button>
-              </form>
-            </>
-          )}
+              )}
+            </form>
+          </>
+
           {submitted && !finished && (
             <>
               <div>Processing... </div>
@@ -221,7 +238,9 @@ function NewForm() {
           )}
           {finished && (
             <>
-              <div>Transcript Processed</div>
+              <div>
+                <b>Transcript Processed</b>
+              </div>
               <button onClick={handleDownload} className="btn">
                 Download transcript
               </button>
