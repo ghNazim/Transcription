@@ -120,8 +120,9 @@ function NewForm() {
   return (
     <div className="container">
       <div className="left">
-        <div className="App">
+        <div className="leftbox">
           <>
+            <h2>Transcription Tool</h2>
             <form onSubmit={handleSubmit}>
               <div>
                 <p>
