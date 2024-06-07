@@ -8,6 +8,8 @@ function Form() {
   const [submitted, setSubmitted] = useState(false);
   const [uuid, setuuid] = useState("");
   const [error, setError] = useState(false);
+  const [serverError, setServerError] = useState(false);
+  const [serverErrorText, setServerErrorText] = useState(false);
   const [finished, setFinished] = useState(false);
   const [filename,setFilename] = useState("")
   const [audioDuration, setAudioDuration] = useState(null);
@@ -41,15 +43,15 @@ function Form() {
         }
       );
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
+      // if (!response.ok) {
+        
+      // }
 
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "transcript.csv"; // Specify the file name and extension here
+      a.download = "transcript.csv"; 
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -87,8 +89,10 @@ function Form() {
         console.log("Form submitted successfully");
         setSubmitted(true);
         setFilename(data.filename)
+        setServerError(false)
 
         const i1 = setInterval(async () => {
+          
           const response2 = await fetch(`http://localhost:4000/process/${uniqueId}`, {
             method: "GET",
           });
@@ -101,9 +105,14 @@ function Form() {
         }, 10000);
       } else {
         console.error("Error submitting form");
+        setServerError(true);
+        const text = await response.json();
+        setServerErrorText(text);
       }
+     
     } catch (error) {
-      console.error("Error:", error);
+      setServerError(true)
+      setServerErrorText(error.message+ ". \n Problem with the server")
     }
   };
   return (
@@ -165,10 +174,17 @@ function Form() {
           <img src={logo} className="spinner" alt="dhd kjsghgcd" />
         </>
       )}
+      {
+        serverError && <>
+        <div className="error">
+          {serverErrorText}
+        </div>
+        </>
+      }
       {finished && (
         <>
           <div>Transcript Processed</div>
-          <button onClick={handleDownload}>Download transcript</button>
+          <button onClick={handleDownload} className="btn">Download transcript</button>
         </>
       )}
     </div>
